@@ -1,7 +1,10 @@
+"""This module includes resmapling functions to address the imbalance dataset"""
+
 import pandas as pd
 import gc
 
 def upsample_for_balance(mailout_train_X_pca, mailout_train_clean_Y, seed = 1234):
+    """upsamples the positive instances in the training data for a balanced dataset"""
     
     mailout_train_data_clean = pd.concat([mailout_train_X_pca,mailout_train_clean_Y], axis=1)
     

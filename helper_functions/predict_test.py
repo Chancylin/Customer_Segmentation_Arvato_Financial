@@ -1,4 +1,8 @@
+"""This module includes the handy functions to make the prediction on test set easier"""
+
 def transform_test_data(mailout_test, max_abs_scaler_customer, pca_all):
+    """applies the preprocessing and transformation on the test dataset"""
+
     # same preprocess
 
     # 1. ===============
@@ -31,6 +35,8 @@ def transform_test_data(mailout_test, max_abs_scaler_customer, pca_all):
 
 
 def predict_test(clf, test_set_pca, testset_prediction, predict_result_file):
+    """makes the prediction on the test dataset with the trained classifier"""
+
     predict_y_proba_test = clf.predict_proba(test_set_pca)
     testset_prediction["RESPONSE"] = predict_y_proba_test[:,1]
     

@@ -1,9 +1,13 @@
+"""This module includes some functions for algorithm tuning"""
+
 import xgboost as xgb
 
 def xgb_train(X_train, y_train,
               X_valid, y_valid,
               X_total, y_total,
               param_dist, early_stopping_rounds=15, train_whole_data=False):
+
+    """Train XGBoost classifier with given parameters"""
 
     xgb_clf = xgb.XGBClassifier(**param_dist)
     
@@ -27,6 +31,21 @@ def xgb_train(X_train, y_train,
 
 
 def xgb_train_generate_stacking(X_total, y_total, param_dist):
+    """Train the XGBoost using k-fold cross-validation, and create a new column from the XGBoost prediction.
+
+    Notes:
+        For stacking, the data that XGBoost will generate the prediction for should not be included as the training
+        data. This is the rule of thumb for stacking technique
+
+    Args:
+        X_total: All the X data (predictors)
+        y_total: All the corresponding Y (response)
+        param_dist: parameter for XGBoost model training
+
+    Returns:
+        X_total_new: A dataframe as the X_total but with an addintional columns from the XGBoost prediction
+
+    """
     
     import numpy as np
     from sklearn.model_selection import StratifiedKFold
@@ -59,6 +78,17 @@ def xgb_train_generate_stacking(X_total, y_total, param_dist):
 from sklearn.metrics import roc_auc_score, average_precision_score, confusion_matrix
 
 def get_accuracy_auc(model, X, ground_y):
+    """A handy score function to help quick check the model performance: (accuracy, AUC, PR-AUC)
+
+    Args:
+        model: sklean model
+        X: the predictor dataframe
+        ground_y: the responses, ground truth
+
+    Returns:
+        model performance: accuracy, AUC, PR-AUC
+
+    """
     predict_y = model.predict(X)
     predict_y_proba = model.predict_proba(X)
     #
